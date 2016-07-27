@@ -1,0 +1,21 @@
+{
+  "name": "lessons",
+  "version": "0.0.1",
+  "main": "index.js",
+  "description": "classes that implement different operations on Computer Science data structures",
+  "devDependencies": {
+    "tape": "^4.6.0",
+	"browserify": "^13.0.1"
+  },
+  "scripts": {
+    "test": "browserify node_modules/lib/test -o node_modules/lib/test/test_bundle.js",
+	"start" : "browserify node_modules/lib/wrapper.js -o bundle.js"
+  },
+  "dependencies": {
+    "check-types": "^7.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/katkanemoto/unorderedArray"
+}
