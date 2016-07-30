@@ -48,93 +48,19 @@ function handleComplete(evt) {
 
 	createjs.Ticker.setFPS(lib.properties.fps);
 	createjs.Ticker.addEventListener("tick", stage);
+	
+	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
+	//added instantiation code here, as this is the only time when the stage is created
+	//	and we can't listen for the "complete" event to load it anywhere else!
+	var UI = lib._.UI({stage:stage, lib:lib, createjs:createjs});
+	
+	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
 }
 
 
 function playSound(id, loop) {
 	return createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
 }
-
-function UI() {
-	var ret = {
-		input : {
-			get : function() {},			//returns a Number or NaN
-		},
-		output : {
-			set : function(text) {},		//sets the value of the text output to `text`
-		},
-		//an object we can attach an event handler to
-		insert_button : {
-			addEventListener : function(type, listener) {},
-		},
-		//an object we can attach an event handler to
-		next_button : {
-			addEventListener : function(type, listener) {},
-		},
-		array : {
-			get : undefined,		//returns a new array
-											//with options including:
-											//	size, how large the array would be (allocating space, not placing nodes)
-											//	nodes, how many random nodes to insert into the array
-			
-			del : function(array) {},		//de-allocates an array
-			
-			input : new array(1),			//a reference to the array pre-allocated by the UI to hold the user input
-			working : new array(5),			//a reference to the array allocated by the UI that the user works on during a lesson
-			
-			move : function(options) {},	//shows an animation of moving an element with value to a target array at index in that array
-											//	logical moving done in lesson code
-											//options:
-											//	from_array, reference to the UI array we're taking the value from
-											//	from_index, refrence to the index in the from_array
-											//	to_array, reference to the UI array we're placing the value in
-											//	to_index, reference to the target index in to_array
-		},
-		arrow : {
-			get : undefined,				//returns a new arrow
-											//with options including:
-											//	name, what to label the arrow (e.g. "tail", "copy", etc)
-											//	array, which array the arrow is associated with
-											//	index, which index in the array the arrow should point at
-											
-			del : function(arrow) {},		//de-allocates an arrow
-			//reference to the arrow allocated by the UI (e.g. "tail" on the working array)
-			//	(defined below)
-			working : undefined,			
-		}
-	}
-	
-	ret.arrow.working = new arrow({name: 'tail', array: ret.array.working, index:0});
-	ret.arrow.get = arrow;
-	ret.array.get = array;
-	
-	return ret;
-};
-
-function array(options) {
-	var ret = [];
-	ret.size = options.size;
-	
-	return ret;
-}
-
-function arrow(options) {
-	if (!(this instanceof arrow)) return new arrow(options);
-	
-	this.name = options.name;
-	this.array = options.array;
-	this.index = options.index;
-	
-	this.increment = function() {
-		this.index += 1;
-	}
-}
-
-function get() {
-	return new UI();
-}
-
-var UI = get();
 </script>
 
 <!-- write your code here -->
