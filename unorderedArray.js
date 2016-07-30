@@ -627,16 +627,9 @@ p.nominalBounds = new cjs.Rectangle(-65,-33.2,129.5,66.5);
 	}
 	this.frame_19 = function() {
 		this.stop();
-		this.dispatchEvent('opened');	
-		this.insert_btn.addEventListener("click", onPlayButton_clickHanlder.bind(this));
-		
-		function onPlayButton_clickHanlder(){
-			this.gotoAndPlay("close");
-		}
 	}
 	this.frame_39 = function() {
 		this.stop();
-		this.dispatchEvent('closed');
 	}
 
 	// actions tween:
@@ -1070,33 +1063,6 @@ p.nominalBounds = null;
 	}
 	this.frame_19 = function() {
 		this.stop();
-		this.dispatchEvent('opened');
-		
-		//use this to gotoAndPlay close when they are finished
-		var gScreen = this;
-		
-		//make an array of arrayElement objects and put them on the screen
-		var SIZE = 5;
-		var arrayElements = new Array(SIZE);
-		makeArray();
-		
-		function makeArray() { 
-			var i;
-			var offsetX = 100;
-			for (i = 0; i < SIZE; i++) {
-				console.log("i = " + i);
-				var arrayElement = new lib.ArrayElement(); 
-				createjs.Sound.play("BulletSound");
-				arrayElement.x = offsetX; 
-				offsetX += 50;
-				arrayElement.y = 200; 
-				console.log("arrayElement.x = " + arrayElement.x);
-				console.log("arrayElement.y = " + arrayElement.y);
-				arrayElement.index_txt.text = i + "";
-				arrayElements.push(arrayElement);  
-				gScreen.addChild(arrayElement);  
-			}
-		}
 	}
 	this.frame_39 = function() {
 		this.stop();
@@ -1154,74 +1120,7 @@ p.nominalBounds = new cjs.Rectangle(-61.9,-36.4,51,83.9);
 
 	// timeline functions:
 	this.frame_0 = function() {
-		root = this;
 		this.stop();
-		var titleScreen, gameScreen, gameOverScreen, score, arrayScreen;
-		
-		openTitleScreen();
-		
-		function openTitleScreen() {
-			console.log("TITLE SCREEN OPENED");
-			titleScreen = new lib.TitleScreen();
-			
-			titleScreen.x = 192;
-			titleScreen.y = 256;
-			//titleScreen.on('opened', playIntroSong);
-			//titleScreen.on('closed', openGameScreen);
-			titleScreen.on('closed', openArrayScreen);
-			root.addChild(titleScreen); 
-			titleScreen.gotoAndPlay("open");
-		}
-		
-		function openArrayScreen() {
-			console.log("ARRAY SCREEN OPENED");
-			arrayScreen = new lib.ArrayScreen(); 
-			arrayScreen.x = 0;
-			arrayScreen.y = 0;
-			arrayScreen.on('closed', openGameOverScreen);
-			root.addChild(arrayScreen); 
-			arrayScreen.gotoAndPlay("open");
-		}
-		
-		function openGameScreen() {
-			console.log("GAME SCREEN OPENED");
-			gameScreen = new lib.GameScreen(); 
-			gameScreen.x = 0;
-			gameScreen.y = 0;
-			gameScreen.on('closed', openGameOverScreen);
-			root.addChild(gameScreen); 
-			gameScreen.gotoAndPlay("open");
-		}
-		
-		function openGameOverScreen() {
-			console.log("GAME OVER SCREEN OPENED");
-			gameOverScreen = new lib.GameOverScreen(); 
-			gameOverScreen.x = 0;
-			gameOverScreen.y = 0;
-			gameOverScreen.on('closed', retryGame);
-			root.addChild(gameOverScreen); 
-			gameOverScreen.gotoAndPlay("open");
-			createjs.Sound.stop("IntroSong");
-			createjs.Sound.play("EndSong");
-		}
-		 
-		function playIntroSong() {
-			createjs.Sound.play("IntroSong",{loop:-1});	
-		}
-		
-		function stopIntroSong() {
-			createjs.Sound.play("EndSong");
-		}
-		
-		
-		function startGame() {
-			gameScreen.startGame();
-		}
-		
-		
-		function retryGame() {
-			openTitleScreen();
-		}
 	}
 
 	// actions tween:

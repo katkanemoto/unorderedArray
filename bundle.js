@@ -1,16 +1,16 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+lib._ = {};
+
 var lesson = require('lib/lesson/unordered_array_lesson');
-var l = lesson({UI: UI});
+//var l = lesson({UI: UI});
 
-l.pre_start();
-console.log(l._state);
-console.log(l._state === l._RUN);
+lib._.lesson = lesson;
 
-console.log(lib);
-console.log(ss);
-console.log(cjs);
-//console.dir(lib.unorderedArray);
-},{"lib/lesson/unordered_array_lesson":3}],2:[function(require,module,exports){
+var lesson_UI = require('lib/UI/lesson_UI');
+//var lu = lesson_UI({stage:lib._._stage});
+
+lib._.UI = lesson_UI;
+},{"lib/UI/lesson_UI":3,"lib/lesson/unordered_array_lesson":4}],2:[function(require,module,exports){
 /*globals define, module, Symbol */
 
 (function (globals) {
@@ -860,6 +860,151 @@ console.log(cjs);
 }(this));
 
 },{}],3:[function(require,module,exports){
+module.exports = lesson_UI;
+
+var check = require('check-types');
+
+function lesson_UI(options) {
+	if (!(this instanceof lesson_UI)) return new lesson_UI(options);
+	
+	//if we don't have a stage, createjs or lib object, can't continue, error
+	if (!(check.object(options) && check.object(options.stage))) {
+		throw new TypeError("Argument 'stage' (object) is required, argument should be object.");
+	}
+	
+	if (!(check.object(options) && check.object(options.lib))) {
+		throw new TypeError("Argument 'lib' (object) is required, argument should be object.");
+	}
+	
+	if (!(check.object(options) && check.object(options.createjs))) {
+		throw new TypeError("Argument 'createjs' (object) is required, argument should be object.");
+	}
+	
+	//TODO: singleton
+	
+	this._state = this._INIT;
+	
+	this._stage = options.stage;
+	this._createjs = options.createjs;
+	this._lib = options.lib;
+	
+	//setup UI elements
+	this._setup_title_screen();
+	this._setup_insert_button();
+	this._setup_array_screen();
+	this._setup_array();
+	
+	this._state = this._PRE_LESSON;
+	
+	//play the initial title screen animation
+	this._title_screen.gotoAndPlay("open");
+};
+
+lesson_UI.prototype = {
+	_setup_title_screen : function() {
+		this._title_screen = new this._lib.TitleScreen();
+		this._title_screen.x = 192;
+		this._title_screen.y = 256;
+		
+		this._stage.addChild(this._title_screen);	//add the title screen to the stage
+	},
+	
+	_setup_insert_button : function() {
+		//insert_btn is automatically populated inside the title screen object by AA
+		this._insert_button = this._title_screen.insert_btn;
+		
+		//next() to transition to the next state and play the close animation on the title screen
+		var instance = this;
+		this._insert_button.addEventListener("click", function() {
+			instance.next();
+		});
+	},
+	
+	_setup_array_screen : function() {
+		this._array_screen = new this._lib.ArrayScreen();	//setup by AA
+		this._array_screen.x = 0;
+		this._array_screen.y = 0;
+	},
+	
+	_setup_array : function() {
+		var size = 5;
+		this._array = this._make_array(size);
+		
+		//TODO: allow config of positioning
+		//positioning array
+		this._array.x = 100;
+		this._array.y = 200;
+	},
+	
+	_make_array : function(size) {
+		var offsetX = 0;
+		var container = new this._createjs.Container();
+		
+		for (var i = 0; i < size; i++) {
+			var arrayElement = new this._lib.ArrayElement(); 
+			
+			arrayElement.x = offsetX;
+			//BUG:
+			//for some reason the width as returned by getBounds() is about half of the ArrayElement length as shown on the canvas
+			//	using 50px as workaround
+			//offsetX += arrayElement.getBounds().width;
+			offsetX += 50;
+			
+			//setting associated index (displays below ArrayElement figure, configured by AA)
+			arrayElement.index_txt.text = String(i);
+			
+			container.addChild(arrayElement);
+		}
+		
+		return container;
+	},
+	
+	//public
+	//proceed through the states of the lesson
+	next : function() {
+		if (this._state === this._INIT) return;	//do nothing if in the INIT state
+		
+		//handling for title screen, before the lesson UI is displayed
+		if (this._state === this._PRE_LESSON) {			
+			//set the state into lesson to allow the transition to the lesson logic
+			this._state = this._LESSON;
+			
+			//TODO: add code here to delete title screen object from the stage and the reference here, to free memory
+			this._title_screen.gotoAndPlay("close");
+			
+			this.next();
+			
+			return;
+		}
+		
+		//handling for lesson screen, after pre-lesson has ended
+		if (this._state === this._LESSON) {
+			this._array_screen.gotoAndPlay("open");	//do the opening animation for the array screen
+			
+			//add the generated array to the screen
+			this._array_screen.addChild(this._array);
+			this._stage.addChild(this._array_screen);
+			
+			return;
+		}
+	},
+	
+	//internal variables
+	_stage : undefined,			//holds a reference to the createjs stage (of type lib.unorderedArray, created in AA)
+	_createjs : undefined,		//holds a reference to the local createjs instance, avoiding the global
+	_lib : undefined,			//holds a reference to the lib object, created by AA and used to access objects created by AA
+	_title_screen : undefined,	//reference to an object of type TitleScreen (created in AA)
+	_insert_button : undefined,	//reference to the insert button object (AA)
+	_array_screen : undefined,	//reference to the array screen object (AA)
+	_array : undefined,			//reference to the array created for the array screen
+	
+	//state tracking variables
+	_state : undefined,
+	_INIT : 0,
+	_PRE_LESSON : 1,
+	_LESSON : 2,
+};
+},{"check-types":2}],4:[function(require,module,exports){
 var check = require('check-types')
 
 function lesson(options) {
