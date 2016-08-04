@@ -502,16 +502,12 @@ p.nominalBounds = new cjs.Rectangle(-6,-18,12,36);
 
 	this.timeline.addTween(cjs.Tween.get(this.index_txt).wait(12));
 
-	// Layer 2
-	this.arrayElement_txt = new cjs.Text("23", "20px 'Papyrus'");
-	this.arrayElement_txt.name = "arrayElement_txt";
-	this.arrayElement_txt.lineHeight = 34;
-	this.arrayElement_txt.lineWidth = 24;
-	this.arrayElement_txt.setTransform(12.1,9.8);
-
-	this.timeline.addTween(cjs.Tween.get(this.arrayElement_txt).wait(12));
-
 	// Layer 1
+	this.text = new cjs.Text("", "20px 'Papyrus-Regular'");
+	this.text.lineHeight = 34;
+	this.text.lineWidth = 100;
+	this.text.setTransform(48.1,86);
+
 	this.shape = new cjs.Shape();
 	this.shape.graphics.f().s("#FF6600").ss(1,1,1).p("Aj5j5IHzAAIAAHzInzAAg");
 	this.shape.setTransform(25,25);
@@ -524,10 +520,10 @@ p.nominalBounds = new cjs.Rectangle(-6,-18,12,36);
 	this.shape_2.graphics.f("#0099BB").s().p("Aj5D6IAAnzIHzAAIAAHzg");
 	this.shape_2.setTransform(25,25);
 
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape}]}).to({state:[{t:this.shape_2},{t:this.shape}]},6).wait(6));
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape},{t:this.text}]}).to({state:[{t:this.shape_2},{t:this.shape}]},6).wait(6));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(-1,-1,52,84.4);
+p.nominalBounds = new cjs.Rectangle(-1,-1,153.1,122.5);
 
 
 (lib.retry_button = function(mode,startPosition,loop) {
@@ -1108,7 +1104,7 @@ p.nominalBounds = new cjs.Rectangle(110,170.5,118.1,430);
 	this.timeline.addTween(cjs.Tween.get(this.instance).to({_off:true},6).wait(6));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(-61.9,-36.4,51,83.9);
+p.nominalBounds = new cjs.Rectangle(-61.9,-36.4,152.6,122);
 
 
 // stage content:
