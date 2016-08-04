@@ -12,7 +12,8 @@
 	"start" : "browserify node_modules/lib/wrapper.js -o bundle.js"
   },
   "dependencies": {
-    "check-types": "^7.0.0"
+    "check-types": "^7.0.0",
+    "random-js": "^1.0.8"
   },
   "keywords": [],
   "author": "",
