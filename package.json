@@ -16,7 +16,9 @@
 	"type-of-is": "^3.4.0",
 	"random-js": "^1.0.8",
 	"color-string": "^1.2.0",
-	"parse-css-font": "^2.0.2"
+	"parse-css-font": "^2.0.2",
+	"wcag-contrast": "^0.1.0",
+	"pubsub-js": "^1.5.3"
   },
   "keywords": [],
   "author": "",
