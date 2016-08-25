@@ -52,8 +52,14 @@ function handleComplete(evt) {
 	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
 	//added instantiation code here, as this is the only time when the stage is created
 	//	and we can't listen for the "complete" event to load it anywhere else!
-	var UI = lib._.lesson_UI({stage:stage, lib:lib, createjs:createjs});
 	
+	//wrap globals into a require()able Map that custom code expects
+	lib._.primitives.set('createjs', createjs);
+	lib._.primitives.set('stage', stage);
+	lib._.primitives.set('lib', lib);
+
+	//setup lesson UI, depends on: lib, stage and createjs (above)
+	var UI = lib._.lesson_UI();
 	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
 }
 
@@ -66,7 +72,9 @@ function playSound(id, loop) {
 
 </head>
 <body onload="init();" style="background-color:#D4D4D4;margin:0px;">
-	<canvas id="canvas" width="384" height="512" style="background-color:#000000"></canvas>
+	<div id='canvas_container'>
+		<canvas id="canvas" width="384" height="512" style="background-color:#000000"></canvas>
+	</div>
 <script src="bundle.js"></script>
 </body>
 </html>
