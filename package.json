@@ -8,7 +8,7 @@
 	"browserify": "^13.0.1"
   },
   "scripts": {
-    "test": "browserify node_modules/lib/test -o node_modules/lib/test/test_bundle.js",
+    "test": "browserify node_modules/lib/test -o bundle.js",
 	"start" : "browserify node_modules/lib/wrapper.js -o bundle.js"
   },
   "dependencies": {

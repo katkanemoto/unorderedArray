@@ -60,6 +60,12 @@ function handleComplete(evt) {
 
 	//setup lesson UI, depends on: lib, stage and createjs (above)
 	var UI = lib._.lesson_UI();
+	
+	//TESTING
+	//	only triggered if testing uilt into to bundle.js
+	if(lib._.testing) {
+		lib._.run_tests();
+	}
 	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
 }
 
