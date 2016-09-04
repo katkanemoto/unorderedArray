@@ -57,9 +57,15 @@ function handleComplete(evt) {
 	lib._.primitives.set('createjs', createjs);
 	lib._.primitives.set('stage', stage);
 	lib._.primitives.set('lib', lib);
-
-	//setup lesson UI, depends on: lib, stage and createjs (above)
-	var UI = lib._.lesson_UI();
+	
+	//TESTING
+	//	only triggered if testing uilt into to bundle.js
+	if(lib._.testing) {
+		lib._.run_tests();
+	} else {
+		//setup lesson UI, depends on: lib, stage and createjs (above)
+		lib._.lesson_UI();
+	}
 	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
 }
 
