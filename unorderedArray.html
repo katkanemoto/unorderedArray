@@ -63,8 +63,10 @@ function handleComplete(evt) {
 	if(lib._.testing) {
 		lib._.run_tests();
 	} else {
+		//get the lesson code to pass to the UI and instantiate once the UI code is in the proper state
+		var lesson = lib._.lesson;
 		//setup lesson UI, depends on: lib, stage and createjs (above)
-		lib._.lesson_UI();
+		lib._.lesson_UI({lesson:lesson});
 	}
 	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
 }
