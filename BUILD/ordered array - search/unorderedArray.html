@@ -1,0 +1,88 @@
+<!--
+	NOTES:
+	1. All tokens are represented by '$' sign in the template.
+	2. You can write your code only wherever mentioned.
+	3. "DO NOT" alter the tokens in the template html as they are required during publishing.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>unorderedArray</title>
+<!-- write your code here -->
+
+
+<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+<script src="unorderedArray.js"></script>
+<script>
+var canvas, stage, exportRoot;
+function init() {
+	// --- write your JS code here ---
+	
+	canvas = document.getElementById("canvas");
+	images = images||{};
+	ss = ss||{};
+
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.loadFile({src:"images/unorderedArray_atlas_.json", type:"spritesheet", id:"unorderedArray_atlas_"}, true);
+	loader.loadManifest(lib.properties.manifest);
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	ss["unorderedArray_atlas_"] = queue.getResult("unorderedArray_atlas_");
+	exportRoot = new lib.unorderedArray();
+
+	stage = new createjs.Stage(canvas);
+	stage.addChild(exportRoot);
+	stage.update();
+	stage.enableMouseOver();
+
+	createjs.Ticker.setFPS(lib.properties.fps);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
+	//added instantiation code here, as this is the only time when the stage is created
+	//	and we can't listen for the "complete" event to load it anywhere else!
+	
+	//wrap globals into a require()able Map that custom code expects
+	lib._.primitives.set('createjs', createjs);
+	lib._.primitives.set('stage', stage);
+	lib._.primitives.set('lib', lib);
+	
+	//TESTING
+	//	only triggered if testing uilt into to bundle.js
+	if(lib._.testing) {
+		lib._.run_tests();
+	} else {
+		//get the lesson code to pass to the UI and instantiate once the UI code is in the proper state
+		var lesson = lib._.lesson;
+		//setup lesson UI, depends on: lib, stage and createjs (above)
+		lib._.lesson_UI({lesson:lesson});
+	}
+	//CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE-CUSTOM-CODE
+}
+
+function playSound(id, loop) {
+	return createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
+}
+</script>
+
+<!-- write your code here -->
+
+</head>
+<body onload="init();" style="background-color:#D4D4D4;margin:0px;">
+	<div id='canvas_container'>
+		<canvas id="canvas" width="384" height="512" style="background-color:#000000"></canvas>
+	</div>
+<script src="bundle.js"></script>
+</body>
+</html>
